@@ -26,7 +26,7 @@ const addJob = asyncHandler(async (req, res) => {
 
 // -- Get All Job Applications --
 const getJobs = asyncHandler(async (req, res) => {
-  const jobs = await Job.find().sort({ appliedDate: -1, createdAt: -1 });
+  const jobs = await Job.find();
   res.status(200).json(new ApiResponse(jobs, "Jobs fetched successfully"));
 });
 
