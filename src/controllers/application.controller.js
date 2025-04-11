@@ -9,6 +9,15 @@ const addJob = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
+  const duplicateJob = await Job.findOne({
+    company: { $regex: new RegExp(`^${company}$`, "i") },
+    position: { $regex: new RegExp(`^${position}$`, "i") },
+  });
+
+  if (duplicateJob) {
+    throw new ApiError(409, "Job application already exists with same company and position");
+  }
+
   const job = new Job({ company, position, status, appliedDate,jobType});
   await job.save();
 
@@ -17,7 +26,7 @@ const addJob = asyncHandler(async (req, res) => {
 
 // -- Get All Job Applications --
 const getJobs = asyncHandler(async (req, res) => {
-  const jobs = await Job.find().sort({ appliedDate: -1 });
+  const jobs = await Job.find().sort({ appliedDate: -1, createdAt: -1 });
   res.status(200).json(new ApiResponse(jobs, "Jobs fetched successfully"));
 });
 
