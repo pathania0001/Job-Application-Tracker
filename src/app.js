@@ -11,7 +11,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.CORS_ORIGIN || "http://localhost:5173",
   credentials: true
 }));
 
