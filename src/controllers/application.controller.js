@@ -8,13 +8,6 @@ const addJob = asyncHandler(async (req, res) => {
   if (!company || !position || !status || !appliedDate) {
     throw new ApiError(400, "All fields are required");
   }
-   
-  const today = new Date();
-  const applied = new Date(appliedDate);
-
-  if (applied > today) {
-    throw new ApiError(400, "Applied date cannot be in the future");
-  }
 
   const job = new Job({ company, position, status, appliedDate,jobType});
   await job.save();
@@ -41,13 +34,6 @@ const updateJob = asyncHandler(async (req, res) => {
 
   if (!company || !position || !status || !appliedDate) {
     throw new ApiError(400, "All fields are required");
-  }
-
-  const today = new Date();
-  const applied = new Date(appliedDate);
-
-  if (applied > today) {
-    throw new ApiError(400, "Applied date cannot be in the future");
   }
 
   const updatedJob = await Job.findByIdAndUpdate(
